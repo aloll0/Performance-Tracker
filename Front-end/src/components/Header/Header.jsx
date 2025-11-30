@@ -1,4 +1,5 @@
 import "tailwindcss"
+import "../../index.css"
 import './Header.css'
 const Header = () => {
   return (
@@ -10,7 +11,6 @@ const Header = () => {
           </div>
           <div className="rightSection flex gap-4">
             <a href="/login" className="container-title">Login</a>
-            <a href="/register" className="container-title">Register</a>
           </div>
         </div>
       </div>
