@@ -1,7 +1,7 @@
 import "./login.css";
-import "../../index.css"
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import "../../index.css";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,13 +13,35 @@ const Login = () => {
     if (localStorage.getItem("user-info")) {
       navigate("/add");
     }
-  }, []);
+  }, [navigate]);
 
-  const logiin = (e) => {
-    e.preventDefault();
+  const logiin = async (e) => {
+    e.preventDefault(); 
+
     console.warn(email, password);
-    let item={email, password};
-    fetch("mongodb://localhost:27017/per-track");
+    let item = { email, password };
+
+    try {
+      let result = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+
+      let data = await result.json();
+      console.log(data);
+
+      if (data.user) {
+        localStorage.setItem("user-info", JSON.stringify(data.user));
+        navigate("/add");
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -32,10 +54,11 @@ const Login = () => {
           </p>
         </div>
         <div className="flex flex-col gap-6 w-full">
-          <form action="">
+          <form onSubmit={logiin}>
             <div className="flex flex-col gap-2 mb-8">
               <label htmlFor="email">Email / Username</label>
               <input
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="you@example.com"
@@ -51,6 +74,7 @@ const Login = () => {
                 </a>
               </div>
               <input
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter your password"
@@ -58,7 +82,7 @@ const Login = () => {
                 id="password"
               />
             </div>
-            <button onClick={logiin} type="submit" className="w-full">
+            <button type="submit" className="w-full">
               Login
             </button>
           </form>
