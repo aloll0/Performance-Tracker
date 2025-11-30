@@ -1,1 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 @import "tailwindcss";
+
+
+:root {
+  --website-bg: #14213d;
+  --container-bg: #ffffff;
+  --el-bg: #0077b6;
+  --text-color: #000000;
+  --accent-color: #e5e5e5;
+  --font: "Almarai", sans-serif;
+}
+
+body{
+  background-color: var(--website-bg) ;
+  color: var( --text-color);
+  font-family: var(--font);
+}
+
+.g-margin{
+  margin: 8px;
+}
+.g-padding{
+  padding: 8px;
+}
