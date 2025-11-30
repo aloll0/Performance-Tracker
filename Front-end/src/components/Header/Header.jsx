@@ -8,7 +8,7 @@ const Header = () => {
       <div className="container">
         <div className="container-box flex justify-between items-center">
           <div className="leftSection">
-            <a href="/">
+            <a href="/dashboard">
               <img src={logo} alt="" className="Logo" />
             </a>
           </div>
