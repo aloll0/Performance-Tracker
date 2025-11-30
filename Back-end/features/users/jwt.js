@@ -15,3 +15,4 @@ export function createToken({ userID, role, expiresIn = "10d" }) {
 export function verifyToken(token) {
   return jwt.verify(token, SECRET, { algorithms: ["HS256"] });
 }
+ 
