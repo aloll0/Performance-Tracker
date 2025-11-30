@@ -1,6 +1,6 @@
 import "./Register.css"
 import "../../index.css";
-import logo from "../../assets/image/performance_8956378.png";
+import logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_43_03 PM.png";
 
 const Register = () => {
   return (
@@ -8,7 +8,6 @@ const Register = () => {
       <div className="container_form flex flex-col gap-4 items-center justify-center">
         <div className="flex gap-4">
           <img className="Logo" src={logo} alt="" />
-          <h1 className="container-title" style={{ color: "var(--container-bg)" }}>PerformanceTracker</h1>
         </div>
         <div className="box_wrabber">
           <div className="flex flex-col mb-8">

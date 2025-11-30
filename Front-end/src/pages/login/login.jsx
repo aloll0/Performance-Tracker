@@ -6,7 +6,7 @@ const Login = () => {
     <div className="container_form">
       <div className="box_wrabber flex flex-col gap-4 items-center justify-center">
         <div className="flex flex-col justify-center">
-          <h1 className="container-title">Performance Tracker</h1>
+          <h1 className="container-title">Performix</h1>
           <p style={{ color: "var(--el-bg)" }}>
             welcome back! Please login to your account.
           </p>
