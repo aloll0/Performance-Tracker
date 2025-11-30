@@ -1,7 +1,27 @@
 import "./login.css";
 import "../../index.css"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("user-info")) {
+      navigate("/add");
+    }
+  }, []);
+
+  const logiin = (e) => {
+    e.preventDefault();
+    console.warn(email, password);
+    let item={email, password};
+    fetch("mongodb://localhost:27017/per-track");
+  };
+
   return (
     <div className="container_form">
       <div className="box_wrabber flex flex-col gap-4 items-center justify-center">
@@ -16,6 +36,7 @@ const Login = () => {
             <div className="flex flex-col gap-2 mb-8">
               <label htmlFor="email">Email / Username</label>
               <input
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="you@example.com"
                 name="email"
@@ -30,13 +51,14 @@ const Login = () => {
                 </a>
               </div>
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter your password"
                 name="password"
                 id="password"
               />
             </div>
-            <button type="submit" className="w-full">
+            <button onClick={logiin} type="submit" className="w-full">
               Login
             </button>
           </form>
