@@ -1,6 +1,7 @@
 import "../../index.css";
 import Logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_43_03 PM.png";
 
+
 const menuItems = [
   {
     section: "top",
