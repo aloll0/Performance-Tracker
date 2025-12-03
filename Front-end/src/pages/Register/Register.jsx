@@ -1,8 +1,104 @@
 import "./Register.css"
 import "../../index.css";
 import logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_43_03 PM.png";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+//http://localhost:3000/api/user/register
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // Validation
+  if (!formData.name || !formData.email || !formData.password || !formData.phone) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+
+  try {
+    const response = await fetch("http://localhost:3000/api/user/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+    console.log("Server response:", data);
+
+    if (response.ok) {
+      alert("Account created successfully!");
+    } else {
+      alert(data.message || "Failed to create account");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred while creating account");
+  }
+};
+
+
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [confirmPass, setConfirmPass] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleConfirmPassChange = (e) => {
+    setConfirmPass(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation
+    if (!formData.name || !formData.email || !formData.password || !confirmPass) {
+      alert("Please fill all fields!");
+      return;
+    }
+
+    if (formData.password !== confirmPass) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/user/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
+      if (response.ok) {
+        alert("Account created successfully!");
+      } else {
+        alert(data.message || "Failed to create account");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while creating account");
+    }
+  };
+
+  useEffect(() => {
+    console.log("Register component mounted");
+    console.log("Initial form data:", formData);
+  }, [formData]);
+
   return (
     <div>
       <div className="container_form flex flex-col gap-4 items-center justify-center">
@@ -16,14 +112,15 @@ const Register = () => {
               Join your team and start tracking your performance goals.
             </p>
           </div>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2 mb-8">
-              <label htmlFor="full_name">Full Name</label>
+              <label htmlFor="name">Full Name</label>
               <input
                 type="text"
                 placeholder="Enter your full name"
-                name="full_name"
-                id="full_name"
+                name="name"
+                id="name"
+                onChange={handleInputChange}
               />
             </div>
             <div className="flex flex-col gap-2 mb-8">
@@ -33,15 +130,27 @@ const Register = () => {
                 placeholder="you@example.com"
                 name="email"
                 id="email"
+                onChange={handleInputChange}
               />
             </div>
             <div className="flex flex-col gap-2 mb-8">
-              <label htmlFor="work_password">Password</label>
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+                name="phone"
+                id="phone"
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex flex-col gap-2 mb-8">
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 placeholder="Enter your password"
-                name="work_password"
-                id="work_password"
+                name="password"
+                id="password"
+                onChange={handleInputChange}
               />
             </div>
             <div className="flex flex-col gap-2 mb-8">
@@ -51,7 +160,11 @@ const Register = () => {
                 placeholder="Confirm your password"
                 name="confirm_password"
                 id="confirm_password"
+                onChange={handleConfirmPassChange}
               />
+              {confirmPass && confirmPass !== formData.password && (
+                <span style={{ color: "red" }}>Passwords do not match</span>
+              )}
             </div>
             <button type="submit" className="w-full">
               Create Account
@@ -59,9 +172,9 @@ const Register = () => {
             <div className="flex justify-center mt-8">
               <p>
                 Already have an account?{" "}
-                <a href="/login" style={{ color: "var(--el-bg)" }}>
+                <Link to={"/login"} style={{ color: "var(--el-bg)" }}>
                   Login here
-                </a>
+                </Link>
               </p>
             </div>
           </form>
@@ -69,6 +182,8 @@ const Register = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Register
+export default Register;
+
+
