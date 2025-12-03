@@ -1,0 +1,27 @@
+//DB install and connection setup
+1- Download mongo community
+2- Install and open
+3- Create a new connection and add /preformance-tracker in the end of the connection URL
+4- This is done once and not needed to run again
+
+//Server activision
+1- Open the project
+2- Navigate to the root backend folder
+3- Write [npx nodemon server.js]
+4- if [Server Live] and [DB connected] shows then you are fine
+If they did not show review your setup and make sure everything is correctly working
+
+//User APIs
+User regiser:
+http://localhost:3000/user/regiser
+Method: POST
+Payload: name, email, password phone and age
+User login:
+http://localhost:3000/user/login
+Method: POST
+Payload: email and password
+User data:
+http://localhost:3000/user/data
+Method: GET
+Payload: Authorization token header
+
