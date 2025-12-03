@@ -1,9 +1,27 @@
-import "tailwindcss"
-import "../../index.css"
-import './Header.css'
-import { Link } from "react-router-dom";
+import "tailwindcss";
+import "../../index.css";
+import "./Header.css";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_46_08 PM.png";
+
 export default function Header() {
+  const navigate = useNavigate();
+
+  // 🔥 Check if user is logged in
+  const isLoggedIn = localStorage.getItem("token");
+
+  // 🔥 Logout function
+  const handleAuth = () => {
+    if (isLoggedIn) {
+      // Logout
+      localStorage.removeItem("token");
+      navigate("/login");
+    } else {
+      // Go to login
+      navigate("/login");
+    }
+  };
+
   return (
     <div>
       <div className="container">
@@ -46,7 +64,11 @@ export default function Header() {
               </svg>
             </div>
 
-            <Link to={"/login"} className="flex items-center gap-2">
+            {/* 🔥 Changed from Link to button */}
+            <button
+              onClick={handleAuth}
+              className="flex items-center gap-2 cursor-pointer bg-transparent border-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -61,8 +83,11 @@ export default function Header() {
                   d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                 />
               </svg>
-              <p className="text-2xl text-white">sign in</p>
-            </Link>
+              <p className="text-2xl text-white">
+                {isLoggedIn ? "Sign Out" : "Sign In"}
+              </p>
+            </button>
+
             <div className="notifcation">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

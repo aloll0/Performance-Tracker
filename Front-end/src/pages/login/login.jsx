@@ -2,6 +2,7 @@ import "./login.css";
 import "../../index.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,37 +11,48 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("user-info")) {
-      navigate("/add");
+    // لو في token، يروح dashboard مباشرة
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
     }
   }, [navigate]);
 
   const logiin = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
-    console.warn(email, password);
-    let item = { email, password };
+    if (!email || !password) {
+      alert("Please fill all fields!");
+      return;
+    }
 
     try {
-      let result = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(item),
+      // 🔥 استخدم axios زي Register
+      const result = await axios.post("http://localhost:3000/api/user/login", {
+        email,
+        password,
       });
 
-      let data = await result.json();
-      console.log(data);
+      console.log("Login response:", result.data);
 
-      if (data.user) {
-        localStorage.setItem("user-info", JSON.stringify(data.user));
-        navigate("/add");
+      // 🔥 احفظ الـ token
+      if (result.data.token) {
+        localStorage.setItem("token", result.data.token);
+        alert("Login successful!");
+
+        // 🔥 Redirect للـ dashboard
+        window.location.href = "/dashboard";
       } else {
-        alert(data.message || "Login failed");
+        alert(result.data.msg || "Login failed");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Login error:", error);
+
+      // 🔥 عرض الـ error message من Backend
+      const errorMsg =
+        error.response?.data?.msg ||
+        error.response?.data?.error ||
+        "Login failed. Please try again.";
+      alert(errorMsg);
     }
   };
 
@@ -64,6 +76,7 @@ export default function Login() {
                 placeholder="you@example.com"
                 name="email"
                 id="email"
+                required
               />
             </div>
             <div className="flex flex-col gap-2 mb-8">
@@ -80,6 +93,7 @@ export default function Login() {
                 placeholder="Enter your password"
                 name="password"
                 id="password"
+                required
               />
             </div>
             <button type="submit" className="w-full">
@@ -96,4 +110,4 @@ export default function Login() {
       </div>
     </div>
   );
-};
+}
