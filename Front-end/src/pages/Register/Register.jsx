@@ -3,44 +3,11 @@ import "../../index.css";
 import logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_43_03 PM.png";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 //http://localhost:3000/api/user/register
 
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  // Validation
-  if (!formData.name || !formData.email || !formData.password || !formData.phone) {
-    alert("Please fill all fields!");
-    return;
-  }
-
-
-  try {
-    const response = await fetch("http://localhost:3000/api/user/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-    console.log("Server response:", data);
-
-    if (response.ok) {
-      alert("Account created successfully!");
-    } else {
-      alert(data.message || "Failed to create account");
-    }
-  } catch (err) {
-    console.error(err);
-    alert("An error occurred while creating account");
-  }
-};
-
-
-
-export default function Register () {
+export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -52,47 +19,62 @@ export default function Register () {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleConfirmPassChange = (e) => {
     setConfirmPass(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Validation
-    if (!formData.name || !formData.email || !formData.password || !confirmPass) {
-      alert("Please fill all fields!");
-      return;
-    }
+  if (
+    !formData.name ||
+    !formData.email ||
+    !formData.password ||
+    !formData.phone
+  ) {
+    alert("Please fill all fields!");
+    return;
+  }
 
-    if (formData.password !== confirmPass) {
-      alert("Passwords do not match!");
-      return;
-    }
+  if (formData.password !== confirmPass) {
+    alert("Passwords do not match!");
+    return;
+  }
 
-    try {
-      const response = await fetch("http://localhost:3000/api/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  try {
+    // 1️⃣ Register فقط
+    await axios.post("http://localhost:3000/api/user/register", formData);
 
-      const data = await response.json();
-      console.log("Server response:", data);
+    alert("Account created successfully! Please login.");
 
-      if (response.ok) {
-        alert("Account created successfully!");
+    // 2️⃣ Redirect للـ login page
+    window.location.href = "/login";
+  } catch (err) {
+    console.error("Full error:", err);
+
+    let errorMsg = "An error occurred";
+
+    if (err.response?.data?.error) {
+      const errorText = err.response.data.error;
+
+      if (errorText.includes("duplicate key") && errorText.includes("email")) {
+        errorMsg = "This email is already registered!";
       } else {
-        alert(data.message || "Failed to create account");
+        errorMsg = errorText;
       }
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred while creating account");
+    } else if (err.response?.data?.msg) {
+      errorMsg = err.response.data.msg;
+    } else if (err.message) {
+      errorMsg = err.message;
     }
-  };
+
+    alert(errorMsg);
+  }
+};
+
 
   useEffect(() => {
     console.log("Register component mounted");
@@ -172,7 +154,7 @@ export default function Register () {
             <div className="flex justify-center mt-8">
               <p>
                 Already have an account?{" "}
-                <Link to={"/login"} style={{ color: "var(--el-bg)" }}>
+                <Link to="/login" style={{ color: "var(--el-bg)" }}>
                   Login here
                 </Link>
               </p>
