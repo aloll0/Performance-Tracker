@@ -40,7 +40,7 @@ const handleSubmit = async (e) => {
 
 
 
-const Register = () => {
+export default function Register () {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -183,7 +183,5 @@ const Register = () => {
     </div>
   );
 };
-
-export default Register;
 
 

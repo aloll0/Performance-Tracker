@@ -163,7 +163,7 @@ const menuItems = [
   },
 ];
 
-const SideBar = () => {
+export default function SideBar () {
   return (
     <aside className="w-64 h-screen text-white shadow-xl p-5 flex flex-col justify-between" style={{background: "var(--el-bg)"}}>
       {/* ===== Logo ===== */}
@@ -210,4 +210,3 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
