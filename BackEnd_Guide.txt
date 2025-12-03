@@ -24,3 +24,4 @@ User data:
 http://localhost:3000/user/data
 Method: GET
 Payload: Authorization token header
+ 
