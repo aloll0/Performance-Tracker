@@ -1,10 +1,19 @@
+"use client";
+import * as React from "react";
+import { Calendar } from "@/components/ui/calendar";
 
-const MyGoals = () => {
+export default function MyGoals() {
+const [date, setDate] = React.useState(new Date());
   return (
-    <div>
-      <h1>MyGoals</h1>
-    </div>
+    <>
+      <h1>hello</h1>
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-md border shadow-sm"
+        captionLayout="dropdown"
+      />
+    </>
   );
 }
-
-export default MyGoals

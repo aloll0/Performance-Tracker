@@ -3,7 +3,7 @@ import Header from "../components/Header/Header.jsx";
 import SideBar from "../components/SideBar/SideBar.jsx";
 import AppRouting from "../router/AppRouting.jsx";
 
-const Layout = () => {
+export default function Layout() {
   const location = useLocation();
 
   const hideHeader =
@@ -31,5 +31,3 @@ const Layout = () => {
     </>
   );
 };
-
-export default Layout;

@@ -3,7 +3,7 @@ import "../../index.css"
 import './Header.css'
 import { Link } from "react-router-dom";
 import logo from "../../assets/image/ChatGPT Image Nov 30, 2025, 07_46_08 PM.png";
-const Header = () => {
+export default function Header() {
   return (
     <div>
       <div className="container">
@@ -85,5 +85,3 @@ const Header = () => {
     </div>
   );
 }
-
-export default Header

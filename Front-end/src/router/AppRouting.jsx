@@ -9,7 +9,7 @@ import Evaluations from "../pages/Evaluations/Evaluations";
 import Reports from "../pages/Reports/Reports";
 import Logout from "../pages/Logout/Logout";
 
-const AppRouting = () => {
+export default function AppRouting() {
   return (
     <div>
       <Routes>
@@ -26,5 +26,3 @@ const AppRouting = () => {
     </div>
   );
 }
-
-export default AppRouting
